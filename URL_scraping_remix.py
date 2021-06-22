@@ -57,7 +57,7 @@ class NeurogrooveScraper():
         date_nick_soup = self.soup.select(".submitted")[0].text.strip().split(",", maxsplit=1)
         time_numbers = datetime.strptime(re.sub('[^0-9]+', '', date_nick_soup[1]), '%d%m%Y%H%M')
         date_nick["Nick"] = date_nick_soup[0]
-        date_nick["Time"] = time_numbers.year
+        date_nick["Time"] = time_numbers
 
         return date_nick
 
