@@ -45,13 +45,13 @@ class NeurogrooveScraper():
         details_soup = self.soup.select(".views-field")
         details = {}
         try:
-            for i in range(6):
+            for i in range(9):
                 splitted = details_soup[i].text.split(":", maxsplit=1)
                 details[splitted[0]] = splitted[1]
         except IndexError:
-            splitted = None
-            details["detail"] = None
+            return details
         return details
+
 
     # returns more basic data[date of trip report submission and nick]
 
@@ -83,14 +83,15 @@ class NeurogrooveScraper():
 
 def data_to_CSV(URL_list):
     with open('Trip_reports.csv', 'w', newline='') as csvfile:
-        fieldnames = [' Substancja wiodąca', ' Dawkowanie', ' Rodzaj przeżycia', ' Set&Setting', ' Wiek',
-                      ' Doświadczenie', 'detail', 'Nick', 'Time', 'Content']
+        fieldnames = [' Substancja wiodąca', ' Natura', ' Chemia',' Apteka' ,' Dawkowanie',
+                      ' Rodzaj przeżycia', ' Set&Setting', ' Doświadczenie',' Wiek', 'Nick', 'Time', 'Content']
 
-        writer = csv.DictWriter(csvfile, fieldnames=fieldnames)
+        writer = csv.DictWriter(csvfile, fieldnames=fieldnames, restval='brak', extrasaction= 'ignore')
         writer.writeheader()
         for URL in URL_list:
             temp_dict = dict()
             temp_dict.update(NeurogrooveScraper(URL).details_scraper())
+            print(NeurogrooveScraper(URL).details_scraper())
             temp_dict.update(NeurogrooveScraper(URL).date_nick_scraper())
             temp_dict.update(NeurogrooveScraper(URL).trip_raport_scraper())
             writer.writerow(temp_dict)
@@ -99,6 +100,7 @@ def data_to_CSV(URL_list):
 
 
 
+data_to_CSV(["https://neurogroove.info/trip/najlepsza-lekcja-w-moim-yciu"])
 
 
 
@@ -106,5 +108,3 @@ def data_to_CSV(URL_list):
 
 
 
-
-    link_to_scrape_generator(func_URL_generator())
