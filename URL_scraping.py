@@ -6,6 +6,7 @@ import lxml
 import re
 from datetime import datetime
 import csv
+import time
 
 # generates lists of links to the URLs with trip raport lists
 
@@ -91,7 +92,6 @@ def data_to_CSV(URL_list):
         for URL in URL_list:
             temp_dict = dict()
             temp_dict.update(NeurogrooveScraper(URL).details_scraper())
-            print(NeurogrooveScraper(URL).details_scraper())
             temp_dict.update(NeurogrooveScraper(URL).date_nick_scraper())
             temp_dict.update(NeurogrooveScraper(URL).trip_raport_scraper())
             writer.writerow(temp_dict)
@@ -99,10 +99,10 @@ def data_to_CSV(URL_list):
 
 
 
-
-data_to_CSV(["https://neurogroove.info/trip/najlepsza-lekcja-w-moim-yciu"])
-
-
+start = time.time()
+data_to_CSV(link_to_scrape_generator(func_URL_generator()))
+end = time.time()
+print("Time elapsed: ", end - start)
 
 
 
