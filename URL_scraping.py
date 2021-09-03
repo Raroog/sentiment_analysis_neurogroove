@@ -83,7 +83,7 @@ class NeurogrooveScraper():
 
 
 def data_to_CSV(URL_list):
-    with open('Trip_reports.csv', 'w', newline='') as csvfile:
+    with open('Trip_reports2.csv', 'w', newline='') as csvfile:
         fieldnames = [' Substancja wiodąca', ' Natura', ' Chemia',' Apteka' ,' Dawkowanie',
                       ' Rodzaj przeżycia', ' Set&Setting', ' Doświadczenie',' Wiek', 'Nick', 'Time', 'Content']
 
