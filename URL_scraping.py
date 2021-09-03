@@ -87,7 +87,7 @@ def data_to_CSV(URL_list):
         fieldnames = [' Substancja wiodąca', ' Natura', ' Chemia',' Apteka' ,' Dawkowanie',
                       ' Rodzaj przeżycia', ' Set&Setting', ' Doświadczenie',' Wiek', 'Nick', 'Time', 'Content']
 
-        writer = csv.DictWriter(csvfile, fieldnames=fieldnames, restval='brak', extrasaction= 'ignore')
+        writer = csv.DictWriter(csvfile, fieldnames=fieldnames, restval=None, extrasaction= 'ignore')
         writer.writeheader()
         for URL in URL_list:
             temp_dict = dict()
@@ -99,10 +99,11 @@ def data_to_CSV(URL_list):
 
 
 
-start = time.time()
-data_to_CSV(link_to_scrape_generator(func_URL_generator()))
-end = time.time()
-print("Time elapsed: ", end - start)
+#start = time.time()
+if __name__ == '__main__':
+    data_to_CSV(link_to_scrape_generator(func_URL_generator()))
+    #end = time.time()
+    #print("Time elapsed: ", end - start)
 
 
 
