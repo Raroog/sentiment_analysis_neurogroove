@@ -8,11 +8,12 @@ from datetime import datetime
 import csv
 import time
 
+
 # generates lists of links to the URLs with trip raport lists
 
 def func_URL_generator(URL="https://www.neurogroove.info/raporty?page="):
     URL_list = ["https://www.neurogroove.info/raporty"]
-    for i in range(1, 64):
+    for i in range(1, 65):
         URL_list.append(f"{URL}{i}")
     return URL_list
 
@@ -25,7 +26,7 @@ def link_to_scrape_generator(URLs):
         soup = BeautifulSoup(requests.get(URL).text, 'lxml')
         for link in soup.find_all("a"):
             temp_link = link.get('href')
-            if temp_link is not None and temp_link.startswith("trip/"):
+            if temp_link is not None and temp_link.startswith("/trip/"):
                 trip_URLs.append(f'https://www.neurogroove.info/{temp_link}')
 
     return trip_URLs
@@ -52,7 +53,6 @@ class NeurogrooveScraper():
         except IndexError:
             return details
         return details
-
 
     # returns more basic data[date of trip report submission and nick]
 
@@ -84,10 +84,10 @@ class NeurogrooveScraper():
 
 def data_to_CSV(URL_list):
     with open('Trip_reports2.csv', 'w', newline='') as csvfile:
-        fieldnames = [' Substancja wiodąca', ' Natura', ' Chemia',' Apteka' ,' Dawkowanie',
-                      ' Rodzaj przeżycia', ' Set&Setting', ' Doświadczenie',' Wiek', 'Nick', 'Time', 'Content']
+        fieldnames = [' Substancja wiodąca', ' Natura', ' Chemia', ' Apteka', ' Dawkowanie',
+                      ' Rodzaj przeżycia', ' Set&Setting', ' Doświadczenie', ' Wiek', 'Nick', 'Time', 'Content']
 
-        writer = csv.DictWriter(csvfile, fieldnames=fieldnames, restval=None, extrasaction= 'ignore')
+        writer = csv.DictWriter(csvfile, fieldnames=fieldnames, restval=None, extrasaction='ignore')
         writer.writeheader()
         for URL in URL_list:
             temp_dict = dict()
@@ -97,15 +97,8 @@ def data_to_CSV(URL_list):
             writer.writerow(temp_dict)
 
 
-
-
-#start = time.time()
+start = time.time()
 if __name__ == '__main__':
     data_to_CSV(link_to_scrape_generator(func_URL_generator()))
-    #end = time.time()
-    #print("Time elapsed: ", end - start)
-
-
-
-
-
+end = time.time()
+print("Time elapsed: ", end - start)
