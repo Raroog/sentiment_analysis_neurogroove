@@ -47,8 +47,8 @@ class NeurogrooveScraper():
         details_soup = self.soup.select(".views-field")
         details = {}
         try:
-            for i in range(9):
-                splitted = details_soup[i].text.split(":", maxsplit=1)
+            for i in details_soup[:9]:
+                splitted = i.text.split(":", maxsplit=1)
                 details[splitted[0]] = splitted[1]
         except IndexError:
             return details
@@ -72,8 +72,8 @@ class NeurogrooveScraper():
         trip_text_dict = dict()
         trip_raport_soup = self.soup.find_all('p')
         trip_raport_text = []
-        for i in range(1, len(self.soup.find_all('p'))):
-            paragraph = trip_raport_soup[i].text
+        for i in trip_raport_soup[1:]:
+            paragraph = i.text
             trip_raport_text.append(paragraph)
             trip_text_dict["Content"] = "".join(trip_raport_text)
         return trip_text_dict
@@ -89,11 +89,13 @@ def data_to_CSV(URL_list):
 
         writer = csv.DictWriter(csvfile, fieldnames=fieldnames, restval=None, extrasaction='ignore')
         writer.writeheader()
+
+        scraper = (NeurogrooveScraper(URL)
         for URL in URL_list:
             temp_dict = dict()
-            temp_dict.update(NeurogrooveScraper(URL).details_scraper())
-            temp_dict.update(NeurogrooveScraper(URL).date_nick_scraper())
-            temp_dict.update(NeurogrooveScraper(URL).trip_raport_scraper())
+            temp_dict.update(scraper.details_scraper())
+            temp_dict.update(scraper.date_nick_scraper())
+            temp_dict.update(scraper.trip_raport_scraper())
             writer.writerow(temp_dict)
 
 
